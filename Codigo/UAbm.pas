@@ -22,10 +22,10 @@ procedure modificacion (p:TLProducto);
 procedure listado (p:TLProducto);
 
 //sale del menu ABM
-procedure salirAbm (sAbm:boolean);
+procedure salirAbm ();
 
 //menu
-procedure MenuaAbm(p:TLProducto);
+procedure menuAbm(p:TLProducto);
 
 
 implementation
@@ -34,7 +34,7 @@ implementation
 procedure impMenuAbm();
 begin
   ClrScr;
-  writeln('---------MENU ABM---------);
+  writeln('---------MENU ABM---------');
 	Writeln('Seleccione una opción:');
   writeln('1)Alta de producto');
   writeln('2)Baja de producto');
@@ -46,11 +46,12 @@ end;
 
 
 procedure alta ( p:TLProducto);
-info:TLProducto
+var
+  info:TProducto;
 begin
   write('Ingrese el nombre del producto: ');
   readln(info.nombre);
-  if (existeNombre(p,nombre)) then
+  if (existeNombre(p,info.nombre)) then
   begin
     writeln('El producto ya existe, intente nuevamente.');
     writeln('Presione una tecla para continuar');
@@ -74,11 +75,12 @@ end;
 
 
 procedure baja (p:TLProducto);
+var
   nombre:string;
 begin
   write('Ingrese el nombre del producto: ');
   readln(nombre);
-  if (existeNombre(p,nombre)) then
+  if (not vacio(p)) and (existeNombre(p,nombre)) then
   begin
     eliminar(p,nombre);
     writeln('El producto se elimino.');
@@ -97,11 +99,11 @@ end;
 
 procedure modificacion (p:TLProducto);
 var
-  info:TLProducto;
+  info:TProducto;
 begin
   write('Ingrese el nombre del producto: ');
   readln(info.nombre);
-  if (existeNombre(p,nombre)) then
+  if (not vacio(p)) and (existeNombre(p,info.nombre)) then
   begin
     //carga los datos
     write('Ingrese la nueva cantidad del stock minimo: ');
@@ -135,15 +137,17 @@ begin
 end;
 
 
-procedure salirAbm (sAbm:boolean);
+
+procedure salirAbm ();
 begin
+  //sale del menu ABM
   sAbm:=true;
 end;
 
 
-procedure MenuaAbm(p:TLProducto);
+procedure menuAbm(p:TLProducto);
 var
-opciones:char;
+opcion:char;
 begin
   sAbm:=false;
   //inicio del ciclo
@@ -158,7 +162,7 @@ begin
       '2': baja (p);
       '3': modificacion (p);
       '4': listado (p);
-      '5': salirAbm (sAbm);
+      '5': salirAbm ();
     end;
   end;
 end;
