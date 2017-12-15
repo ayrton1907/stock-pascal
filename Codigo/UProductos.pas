@@ -1,4 +1,4 @@
-unit productos;
+unit UProductos;
 
 interface
 //declaracion de tipo producto que cuenta con tres campo.
@@ -28,13 +28,15 @@ function vacio(p:TLProducto):boolean;
 
 //Inserta un nuevo producto al inicio de la lista.
 procedure insertar( p:TLProducto; info:TProducto);
-procedure
 
-// Edicion de un  elemento segun su nombre.
-procedure modificar(p:TLProducto;nombre:string;info:TPersona);
+//verifica si existe el producto
+function existeNombre(p:TLProducto;nombre:string):boolean;
 
 //Elimina un elemento de la lista  segun su nombre
 procedure eliminar(p:TLProducto;nombre:string);
+
+// Edicion de un  elemento segun su nombre.
+procedure modificar(p:TLProducto;info:TPersona);
 
 (*mostrara un listado de todo los productos segun su orden de carga, esto teniendo en
 cunta que se carga los elemento al principio de la lista*)
@@ -44,6 +46,8 @@ procedure mostrar(p:TLProducto);
 
 
 implementation
+
+
 procedure iniLista(var p:TLProducto);
 begin
     new(p);
@@ -71,20 +75,24 @@ begin
 	aux^.info := info;
 end;
 
-procedure modificar(p:TLProducto;nombre:string;info:TPersona);
+
+function existeNombre(p:TLProducto;nombre:string):boolean;
 var
   aux:TLProducto;
 begin
   aux:=p^.next;
-	while (aux <> nil) and (p.info.nombre <> nombre) do
+	while (aux <> nil) and (p^.info.nombre <> nombre) do
 	begin
-		aux := aux^.next; //Avanzar
+   //Avanzar
+		aux := aux^.next;
 	end;
-  if (p.info.nombre=nombre) then
+  if (p^.info.nombre=nombre) then
   begin
-    aux^.info:=info;
+    //informa la existencia o no del nombre
+    existeNombre:=true;
   end;
 end;
+
 procedure eliminar(p:TLProducto;nombre:string);
 begin
    ant:= p;
@@ -92,16 +100,38 @@ begin
    sig := aux^.next;
    while (aux <> nil) and (p^.info.nombre=nombre) do
    begin
-     ant:= ant^.next; //Avanzar
+     //Avanzar
+     ant:= ant^.next;
      aux:=ant^.next;
      sig := aux^.next;
    end;
    if (p^.info.nombre=nombre) then
    begin
+     //elimina el elemento de la lista, y la encadena
      dispose(aux);
      ant^.next := sig;
    end;
  end;
+
+
+procedure modificar(p:TLProducto;info:TPersona);
+var
+  aux:TLProducto;
+begin
+  aux:=p^.next;
+	while (aux <> nil) and (p^.info.nombre <> nombre) do
+	begin
+    //Avanzar
+		aux := aux^.next;
+	end;
+  if (p^.info.nombre=nombre) then
+  begin
+    //modifica los datos del producto
+    aux^.info:=info;
+  end;
+end;
+
+
 procedure mostrar(p:TLProducto);
 var
   aux:TLProducto;
