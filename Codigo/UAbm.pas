@@ -24,6 +24,9 @@ procedure listado (p:TLProducto);
 //sale del menu ABM
 procedure salirAbm (sAbm:boolean);
 
+//menu
+procedure MenuaAbm(p:TLProducto);
+
 
 implementation
 
@@ -31,13 +34,13 @@ implementation
 procedure impMenuAbm();
 begin
   ClrScr;
-  write('---------MENU ABM---------);
-	Write('Seleccione una opción:');
-  write('1)Alta de producto');
-  write('2)Baja de producto');
-  write('3)Modificar producto');
-  write('4)Listado de producto');
-  write('5)Volver al menu anterior');
+  writeln('---------MENU ABM---------);
+	Writeln('Seleccione una opción:');
+  writeln('1)Alta de producto');
+  writeln('2)Baja de producto');
+  writeln('3)Modificar producto');
+  writeln('4)Listado de producto');
+  writeln('5)Volver al menu anterior');
   Write('Opcion: ');
 end;
 
@@ -134,7 +137,31 @@ end;
 
 procedure salirAbm (sAbm:boolean);
 begin
-  sAbm:=false;
+  sAbm:=true;
 end;
+
+
+procedure MenuaAbm(p:TLProducto);
+var
+opciones:char;
+begin
+  sAbm:=false;
+  //inicio del ciclo
+  while  (not sAbm) do
+  begin
+    impMenuAbm();
+    readln(opcion);
+    ClrScr;
+    //ingresa a una opcion valida del menu, si no no hace nada.
+    case opcion of
+      '1': alta (p);
+      '2': baja (p);
+      '3': modificacion (p);
+      '4': listado (p);
+      '5': salirAbm (sAbm);
+    end;
+  end;
+end;
+
 
 end.
