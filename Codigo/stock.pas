@@ -1,10 +1,10 @@
 program stock;
-uses UProductos,UAbm,crt;
+uses UProductos,UAbm,UConsultas,crt;
 var
   sPrincipal:boolean;
-  lista: TLProducto;
+  p,q: TLProducto;
   opcion:char;
-
+  arch:TAProducto;
 
 //imprime menu principal.
 procedure impMenuPrincipal();
@@ -27,7 +27,10 @@ end;
 
 
 begin
-  iniLista(lista);
+  assign(arch,'productos.dat');
+  TextColor(white);
+  iniLista(p,q);
+  cargarArch(arch,q);
   sPrincipal:=false;
   //inicio del ciclo
   while  (not sPrincipal) do
@@ -37,8 +40,8 @@ begin
     ClrScr;
     //ingresa a una opcion valida del menu, si no no hace nada.
     case opcion of
-      '1': menuAbm (lista);
-
+      '1': menuAbm (arch,p,q);
+      '2': menuConsultas(p,q);
       '3': salidaPrincipal();
     end;
   end;

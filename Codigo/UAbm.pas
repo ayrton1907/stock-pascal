@@ -13,19 +13,19 @@ procedure impMenuAbm ();
 procedure alta (p:TLProducto);
 
 //modifica un producto
-procedure baja (p:TLProducto);
+procedure baja (p,q:TLProducto);
 
 //modifica un producto
-procedure modificacion (p:TLProducto);
+procedure modificacion (p,q:TLProducto);
 
 //liosta todo los productos
-procedure listado (p:TLProducto);
+procedure listado (p,q:TLProducto);
 
 //sale del menu ABM
-procedure salirAbm ();
+procedure salirAbm (var arch:TAProducto;p:TLProducto);
 
 //menu
-procedure menuAbm(p:TLProducto);
+procedure menuAbm(var arch:TAProducto;p,q:TLProducto);
 
 
 implementation
@@ -74,13 +74,13 @@ begin
 end;
 
 
-procedure baja (p:TLProducto);
+procedure baja (p,q:TLProducto);
 var
   nombre:string;
 begin
   write('Ingrese el nombre del producto: ');
   readln(nombre);
-  if (not vacio(p)) and (existeNombre(p,nombre)) then
+  if (not vacio(p,q)) and (existeNombre(p,nombre)) then
   begin
     eliminar(p,nombre);
     writeln('El producto se elimino.');
@@ -97,13 +97,13 @@ begin
 end;
 
 
-procedure modificacion (p:TLProducto);
+procedure modificacion (p,q:TLProducto);
 var
   info:TProducto;
 begin
   write('Ingrese el nombre del producto: ');
   readln(info.nombre);
-  if (not vacio(p)) and (existeNombre(p,info.nombre)) then
+  if (not vacio(p,q)) and (existeNombre(p,info.nombre)) then
   begin
     //carga los datos
     write('Ingrese la nueva cantidad del stock minimo: ');
@@ -127,25 +127,36 @@ begin
 end;
 
 
-procedure listado (p:TLProducto);
+procedure listado (p,q:TLProducto);
 begin
-  writeln('listado de productos');
-  mostrar(p);
-  writeln('Presione una tecla para continuar');
-  readkey;
-  //vuelve al menu principal
+  if (not vacio(p,q)) then
+  begin
+    writeln('listado de productos');
+    mostrar(p,0);
+    writeln('Presione una tecla para continuar');
+    readkey;
+    //vuelve al menu principal
+  end
+  else
+  begin
+    writeln('listado de productos vacia');
+    writeln('Presione una tecla para continuar');
+    readkey;
+    //vuelve al menu principal
+  end;
 end;
 
 
 
-procedure salirAbm ();
+procedure salirAbm (var arch:TAProducto;p:TLProducto);
 begin
   //sale del menu ABM
   sAbm:=true;
+  guardarArch(arch,p);
 end;
 
 
-procedure menuAbm(p:TLProducto);
+procedure menuAbm(var arch:TAProducto;p,q:TLProducto);
 var
 opcion:char;
 begin
@@ -159,10 +170,10 @@ begin
     //ingresa a una opcion valida del menu, si no no hace nada.
     case opcion of
       '1': alta (p);
-      '2': baja (p);
-      '3': modificacion (p);
-      '4': listado (p);
-      '5': salirAbm ();
+      '2': baja (p,q);
+      '3': modificacion (p,q);
+      '4': listado (p,q);
+      '5': salirAbm (arch,p);
     end;
   end;
 end;
